@@ -1,7 +1,67 @@
-     // In server.js (Node.js/Express)
-     app.post('/api/save-idea', (req, res) => {
-         // Authenticate user, then save idea ID to their profile in DB
-         // e.g., using MongoDB: User.findByIdAndUpdate(userId, { $push: { savedIdeas: ideaId } })
-         res.json({ message: 'Idea saved!' });
+
+     
+     const API_BASE = 'http://localhost:5000/api';
+     let token = localStorage.getItem('token');
+
+     // Load ideas
+     async function loadIdeas() {
+       const res = await fetch(`${API_BASE}/ideas`);
+       const ideas = await res.json();
+       const grid = document.getElementById('idea-grid');
+       grid.innerHTML = ideas.map(idea => `
+         <div class="idea-card">
+           <img src="${idea.image}" alt="${idea.title}">
+           <h4>${idea.title}</h4>
+           <p>${idea.description}</p>
+           <button onclick="saveIdea('${idea._id}')">Save Idea</button>
+           ${idea.products.map(p => `<a href="${p.link}" target="_blank">Buy ${p.name}</a>`).join('')}
+         </div>
+       `).join('');
+     }
+
+     // Register
+     document.getElementById('register-form').addEventListener('submit', async (e) => {
+       e.preventDefault();
+       const email = document.getElementById('reg-email').value;
+       const password = document.getElementById('reg-password').value;
+       await fetch(`${API_BASE}/auth/register`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) });
+       alert('Registered!');
      });
+
+     // Login
+     document.getElementById('login-form').addEventListener('submit', async (e) => {
+       e.preventDefault();
+       const email = document.getElementById('login-email').value;
+       const password = document.getElementById('login-password').value;
+       const res = await fetch(`${API_BASE}/auth/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) });
+       const data = await res.json();
+       if (data.token) {
+         token = data.token;
+         localStorage.setItem('token', token);
+         document.getElementById('auth-forms').style.display = 'none';
+         document.getElementById('dashboard').style.display = 'block';
+         loadSavedIdeas();
+       }
+     });
+
+     // Save idea
+     async function saveIdea(ideaId) {
+       if (!token) return alert('Login first!');
+       await fetch(`${API_BASE}/ideas/save`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': token }, body: JSON.stringify({ ideaId }) });
+       alert('Idea saved!');
+     }
+
+     // Load saved ideas
+     async function loadSavedIdeas() {
+       const res = await fetch(`${API_BASE}/ideas/saved`, { headers: { 'Authorization': token } });
+       const ideas = await res.json();
+       document.getElementById('saved-ideas').innerHTML = ideas.map(idea => `<p>${idea.title}</p>`).join('');
+     }
+
+     // On load, show account if logged in
+     if (token) {
+       document.getElementById('auth-forms').style.display = 'none';
+       document.getElementById('dashboard').style.display = 'block';
+       loadSavedIdeas();
+     }
      
