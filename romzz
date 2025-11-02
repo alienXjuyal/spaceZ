@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roomzz - Create Your Room, Your Personal Space</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base styles */
+        :root {
+            --primary: #ff6b9d;
+            --secondary: #c779d0;
+            --accent: #4bc0c8;
+            --dark: #5a4b81;
+            --light: #f8f5ff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        /* Header & Navigation */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            padding: 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1758&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            z-index: 2;
+            max-width: 800px;
+            padding: 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+            animation: fadeInDown 1s ease;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.5s both;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite 1s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Floating elements animation */
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .floating-element {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        /* Sections */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: var(--dark);
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+        
+        /* Color Ideas Section */
+        .color-palettes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .palette {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .palette:hover {
+            transform: translateY(-10px);
+        }
+        
+        .palette-colors {
+            display: flex;
+            height: 120px;
+        }
+        
+        .palette-color {
+            flex: 1;
+        }
+        
+        .palette-info {
+            padding: 1.5rem;
+            background-color: white;
+        }
+        
+        .palette-info h3 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        /* Products Section */
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .product-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .product-info {
+            padding: 1.5rem;
+        }
+        
+        .product-info h3 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .product-price {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .buy-button {
+            display: inline-block;
+            padding: 0.7rem 1.5rem;
+            background-color: var(--dark);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .buy-button:hover {
+            background-color: var(--primary);
+        }
+        
+        /* DIY Section */
+        .diy-ideas {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .diy-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .diy-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .diy-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .diy-info {
+            padding: 1.5rem;
+        }
+        
+        .diy-info h3 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .diy-steps {
+            margin-top: 1rem;
+        }
+        
+        .diy-steps li {
+            margin-bottom: 0.5rem;
+            list-style-position: inside;
+        }
+        
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--dark), #3a2c5f);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .social-icons {
+            margin: 2rem 0;
+        }
+        
+        .social-icons a {
+            display: inline-block;
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 1rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Profile Page Styles */
+        .profile-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            margin-right: 2rem;
+        }
+        
+        .profile-info h1 {
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-info p {
+            color: #777;
+        }
+        
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .stat {
+            padding: 1rem;
+        }
+        
+        .stat-number {
+            display: block;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        .saved-items {
+            margin-top: 2rem;
+        }
+        
+        .saved-items h2 {
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+        }
+        
+        .saved-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .saved-item {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .saved-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .saved-item img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-avatar {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+        }
+        
+        /* Page transition */
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">Roomzz</div>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
+                <li><a href="#" class="nav-link" data-page="profile">My Space</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="floating-elements" id="floatingElements"></div>
+            <div class="hero-content">
+                <h1>Create Your Room, Your Personal Space</h1>
+                <p>Discover amazing room decor ideas, shop trendy products, and unleash your creativity with our DIY guides.</p>
+                <a href="#color-ideas" class="cta-button">Explore Ideas</a>
+            </div>
+        </section>
+
+        <!-- Color Ideas Section -->
+        <section id="color-ideas">
+            <h2 class="section-title">Color Inspiration</h2>
+            <div class="color-palettes">
+                <div class="palette">
+                    <div class="palette-colors">
+                        <div class="palette-color" style="background-color: #ff6b9d;"></div>
+                        <div class="palette-color" style="background-color: #ffd166;"></div>
+                        <div class="palette-color" style="background-color: #06d6a0;"></div>
+                        <div class="palette-color" style="background-color: #118ab2;"></div>
+                    </div>
+                    <div class="palette-info">
+                        <h3>Vibrant Pop</h3>
+                        <p>Energetic colors that make your room pop with personality.</p>
+                    </div>
+                </div>
+                
+                <div class="palette">
+                    <div class="palette-colors">
+                        <div class="palette-color" style="background-color: #f8f5ff;"></div>
+                        <div class="palette-color" style="background-color: #e2d9f3;"></div>
+                        <div class="palette-color" style="background-color: #c779d0;"></div>
+                        <div class="palette-color" style="background-color: #5a4b81;"></div>
+                    </div>
+                    <div class="palette-info">
+                        <h3>Dreamy Pastels</h3>
+                        <p>Soft and soothing colors for a calming atmosphere.</p>
+                    </div>
+                </div>
+                
+                <div class="palette">
+                    <div class="palette-colors">
+                        <div class="palette-color" style="background-color: #264653;"></div>
+                        <div class="palette-color" style="background-color: #2a9d8f;"></div>
+                        <div class="palette-color" style="background-color: #e9c46a;"></div>
+                        <div class="palette-color" style="background-color: #f4a261;"></div>
+                    </div>
+                    <div class="palette-info">
+                        <h3>Earth Tones</h3>
+                        <p>Natural colors that bring the outdoors inside.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section id="products">
+            <h2 class="section-title">Trendy Room Decor</h2>
+            <div class="products">
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80');"></div>
+                    <div class="product-info">
+                        <h3>Fairy Light Curtains</h3>
+                        <p>Add a magical touch to your windows with these LED fairy light curtains.</p>
+                        <div class="product-price">$24.99</div>
+                        <a href="#" class="buy-button">Buy Now</a>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1758&q=80');"></div>
+                    <div class="product-info">
+                        <h3>Bohemian Tapestry</h3>
+                        <p>Colorful wall tapestry to transform any blank wall into a statement piece.</p>
+                        <div class="product-price">$19.99</div>
+                        <a href="#" class="buy-button">Buy Now</a>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('https://images.unsplash.com/photo-1540574163026-643ea20ade25?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80');"></div>
+                    <div class="product-info">
+                        <h3>Velvet Cushions Set</h3>
+                        <p>Luxurious velvet cushions in various colors to elevate your seating area.</p>
+                        <div class="product-price">$34.99</div>
+                        <a href="#" class="buy-button">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DIY Section -->
+        <section id="diy">
+            <h2 class="section-title">DIY Room Decor</h2>
+            <div class="diy-ideas">
+                <div class="diy-card">
+                    <div class="diy-image" style="background-image: url('https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80');"></div>
+                    <div class="diy-info">
+                        <h3>Macrame Wall Hanging</h3>
+                        <p>Create a beautiful bohemian wall decoration with simple knots.</p>
+                        <ul class="diy-steps">
+                            <li>Gather macrame cord and a wooden dowel</li>
+                            <li>Learn basic macrame knots online</li>
+                            <li>Create your design and attach to dowel</li>
+                            <li>Add beads or feathers for extra flair</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="diy-card">
+                    <div class="diy-image" style="background-image: url('https://images.unsplash.com/photo-1533090368676-1fd25485db88?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1769&q=80');"></div>
+                    <div class="diy-info">
+                        <h3>Photo Clip String Lights</h3>
+                        <p>Display your favorite memories in a creative way.</p>
+                        <ul class="diy-steps">
+                            <li>String fairy lights along your wall</li>
+                            <li>Attach mini clothespins to the wire</li>
+                            <li>Clip your favorite photos to the lights</li>
+                            <li>Add decorative elements like dried flowers</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="diy-card">
+                    <div class="diy-image" style="background-image: url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1758&q=80');"></div>
+                    <div class="diy-info">
+                        <h3>Custom Painted Plant Pots</h3>
+                        <p>Add personality to your plant collection with custom painted pots.</p>
+                        <ul class="diy-steps">
+                            <li>Get plain terracotta pots</li>
+                            <li>Prime with white paint if needed</li>
+                            <li>Paint designs with acrylic paints</li>
+                            <li>Seal with a clear varnish</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <h2>Roomzz</h2>
+                <p>Create your room, your personal space</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+                <p>&copy; 2023 Roomzz. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Profile Page -->
+    <div id="profile" class="page">
+        <!-- Profile Content -->
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="profile-info">
+                    <h1>Alex Johnson</h1>
+                    <p>Room decor enthusiast | DIY lover | Color coordinator</p>
+                    <p>Member since March 2022</p>
+                </div>
+            </div>
+            
+            <div class="profile-stats">
+                <div class="stat">
+                    <span class="stat-number">47</span>
+                    <span class="stat-label">Saved Ideas</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">12</span>
+                    <span class="stat-label">DIY Projects</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">28</span>
+                    <span class="stat-label">Products Bought</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">5</span>
+                    <span class="stat-label">Room Makeovers</span>
+                </div>
+            </div>
+            
+            <div class="saved-items">
+                <h2>My Saved Items</h2>
+                <div class="saved-grid">
+                    <div class="saved-item">
+                        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80" alt="Fairy Lights">
+                        <h3>Fairy Light Curtains</h3>
+                        <p>Saved on May 12, 2023</p>
+                    </div>
+                    
+                    <div class="saved-item">
+                        <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80" alt="Macrame">
+                        <h3>Macrame Wall Hanging</h3>
+                        <p>Saved on April 28, 2023</p>
+                    </div>
+                    
+                    <div class="saved-item">
+                        <img src="https://images.unsplash.com/photo-1540574163026-643ea20ade25?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80" alt="Cushions">
+                        <h3>Velvet Cushions Set</h3>
+                        <p>Saved on June 5, 2023</p>
+                    </div>
+                    
+                    <div class="saved-item">
+                        <img src="https://images.unsplash.com/photo-1533090368676-1fd25485db88?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1769&q=80" alt="Photo Lights">
+                        <h3>Photo Clip String Lights</h3>
+                        <p>Saved on March 15, 2023</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="saved-items">
+                <h2>My DIY Projects</h2>
+                <div class="saved-grid">
+                    <div class="saved-item">
+                        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1758&q=80" alt="Painted Pots">
+                        <h3>Custom Painted Plant Pots</h3>
+                        <p>Completed on May 20, 2023</p>
+                    </div>
+                    
+                    <div class="saved-item">
+                        <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80" alt="Macrame">
+                        <h3>Macrame Wall Hanging</h3>
+                        <p>Completed on April 10, 2023</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <h2>Roomzz</h2>
+                <p>Create your room, your personal space</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+                <p>&copy; 2023 Roomzz. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Create floating elements for the hero section
+        document.addEventListener('DOMContentLoaded', function() {
+            const floatingContainer = document.getElementById('floatingElements');
+            const colors = ['#ff6b9d', '#c779d0', '#4bc0c8', '#ffd166', '#06d6a0'];
+            
+            for (let i = 0; i < 15; i++) {
+                const element = document.createElement('div');
+                element.classList.add('floating-element');
+                
+                // Random properties
+                const size = Math.random() * 60 + 20;
+                const left = Math.random() * 100;
+                const animationDuration = Math.random() * 20 + 10;
+                const delay = Math.random() * 5;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                element.style.width = `${size}px`;
+                element.style.height = `${size}px`;
+                element.style.left = `${left}%`;
+                element.style.animationDuration = `${animationDuration}s`;
+                element.style.animationDelay = `${delay}s`;
+                element.style.backgroundColor = color;
+                
+                floatingContainer.appendChild(element);
+            }
+            
+            // Add scroll animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        entry.target.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe elements for animation
+            document.querySelectorAll('.palette, .product-card, .diy-card').forEach(el => {
+                observer.observe(el);
+            });
+            
+            // Page navigation
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pages = document.querySelectorAll('.page');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links and pages
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    pages.forEach(p => p.classList.remove('active'));
+                    
+                    // Add active class to clicked link and corresponding page
+                    this.classList.add('active');
+                    const pageId = this.getAttribute('data-page');
+                    document.getElementById(pageId).classList.add('active');
+                    
+                    // Scroll to top when switching pages
+                    window.scrollTo(0, 0);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
